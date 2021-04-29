@@ -15,22 +15,25 @@ setwd(WD)
 
 #obtaining directory paths for both groups
 bamDir <- "/scratch/scwalls/DaphniaDevel/STAR_RNA/fastqs"
-dp_Annot <- "/scratch/scwalls/T502_RNAseq/annotation/PA42.4.0_v4_genes.gtf"
+dp_Annot <- "/scratch/scwalls/T502_RNAseq/annotation/PA42_4.0_onlygeneIDs.saf"
+#dp_Annot <- "/scratch/scwalls/T502_RNAseq/annotation/PA42.4.0.test2.gtf"
+#dp_Annot <- "/scratch/scwalls/STRIPEseq_pipelines/GoSTRIPES_sing/STRIPES/DpGENOME/PA42.4.0.test2.gtf"
+
 
 #obtaining list of file names for both groups
 ## change variable namess to A, B, ect
 ## change pattern to grab .bam files for the daphnia
-files_A <- list.files(bamDir, pattern="\\A*.bam", full.names=TRUE)
-files_B <- list.files(bamDir, pattern="\\B*.bam", full.names=TRUE)
-files_C <- list.files(bamDir, pattern="\\C*.bam", full.names=TRUE)
-files_D <- list.files(bamDir, pattern="\\D*.bam", full.names=TRUE)
-files_E <- list.files(bamDir, pattern="\\E*.bam", full.names=TRUE)
-files_F <- list.files(bamDir, pattern="\\F*.bam", full.names=TRUE)
+files_A <- list.files(bamDir, pattern='*A.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
+files_B <- list.files(bamDir, pattern='*B.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
+files_C <- list.files(bamDir, pattern='*C.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
+files_D <- list.files(bamDir, pattern='*D.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
+files_E <- list.files(bamDir, pattern='*E.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
+files_F <- list.files(bamDir, pattern='*F.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
 
 daphnia_files <- c(files_A, files_B, files_C, files_D, files_E, files_F)
 
 #creating a count table
-daphnia_fc <- featureCounts(daphnia_files, annot.ext=dp_Annot, useMetaFeatures=TRUE, strandSpecific=1, isPairedEnd=FALSE, nthreads=16, isGTFAnnotationFile=TRUE, primaryOnly=TRUE)
+daphnia_fc <- featureCounts(daphnia_files, annot.ext=dp_Annot, useMetaFeatures=TRUE, strandSpecific=1, isPairedEnd=TRUE, nthreads=16, isGTFAnnotationFile=FALSE, GTF.featureType="gene", GTF.attrType="gene_id", primaryOnly=TRUE)
 
 save(daphnia_fc, file="daphnia_DE.RData") #saving our featureCounts data to an R binary
 
@@ -39,7 +42,7 @@ save(daphnia_fc, file="daphnia_DE.RData") #saving our featureCounts data to an R
 #load("daphnia_DE.RData") #starting from an R binary containing the featureCounts list created using the commands above. To run the above commands simply uncomment them (remove the leading '#' from each individual command), and commend out this line.
 
 dge <- DGEList(counts = daphnia_fc$counts,
-               group = c(rep("files_A",4),rep("files_B",3),rep("files_C",2),rep("files_D",5),rep("files_E",3),rep("files_F",1)),
+               group = c(rep("files_A",4),rep("files_B",4),rep("files_C",2),rep("files_D",5),rep("files_E",3),rep("files_F",1)),
                genes = daphnia_fc$annotation$GeneID)
 
 ### Now we will apply TMM normalization
@@ -52,14 +55,17 @@ dge$samples
 
 ### making a plot of the library counts data
 barplot(dge$samples$lib.size, names=c("A1","A2","A3",
-                                      "A4", "A5", "B1","B2", "B3",
-                                      "B4"), las=2, ylim=c(0,30000000))
+                                      "A4", "B1","B2", "B3",
+                                      "B4", "C1", "C2", "D1", "D2", "D3", "D4",
+                                      "D5", "E1", "E2", "E3", "F1"), las=2, ylim=c(0,1200000))
+ggsave(file="library_counts_barplot.png", path="/scratch/T502_RNAseq/plots")
 
 ### making a plot of the counts value
 logcounts <- cpm(dge,log=TRUE)
 boxplot(logcounts, xlab="", ylab="(log2) counts per million",las=2)
 abline(h=median(logcounts),col="blue")
 title("Boxplots of logCPMs (unnormalised)")
+ggsave(file="boxplot_count_data.png", path="/scratch/T502_RNAseq/plots")
 
 # Filtering out genes that have a low number of counts (i.e. are lowly-expressed)
 
@@ -70,7 +76,7 @@ dge <- dge[keep, keep.lib.sizes=FALSE]
 
 design <- model.matrix(~dge$samples$group)
 
-colnames(design) <- c("seud1", "nhr40")
+colnames(design) <- c("A", "B", "C", "D", "E", "F")
 
 design #what does this object look like?
 
@@ -86,6 +92,7 @@ sqrt(dge$common.disp)
 # Now we plot the tagwise dispersions against the log2-scaled counts-per million (CPM) values
 
 plotBCV(dge)
+ggsave(file="tagwise_dispersions.png", path="/scratch/T502_RNAseq/plots")
 
 # Now we performed the differential expression calculation
 
@@ -120,7 +127,10 @@ library(Biobase) #load this required package if you haven't already done so
 library(gplots)
 
 de_data <- dge$counts
-colnames(de_data) <- c("Seud1-1","Seud1-2","Seud1-3", "Seud1-4", "NHR40-1","NHR40-2", "NHR40-3", "NHR40-4")
+colnames(de_data) <- c("A1", "A2","A3",
+                       "A4", "B1","B2", "B3",
+                       "B4", "C1", "C2", "D1", "D2", "D3", "D4",
+                       "D5", "E1", "E2", "E3", "F1" )
 head(de_data)
 
 top_tags <- topTags(lrt, n= 18146, sort.by="none")
@@ -134,19 +144,22 @@ head(diff.genes)
 length(diff.genes)
 
 dge.subset = dge[diff.genes, ]
-colnames(dge.subset$counts) <- c("Seud1-1","Seud1-2","Seud1-3", "Seud1-4", "NHR40-1","NHR40-2", "NHR40-3", "NHR40-4")
+colnames(dge.subset$counts) <- c("A1", "A2","A3",
+                                 "A4", "B1","B2", "B3",
+                                 "B4", "C1", "C2", "D1", "D2", "D3", "D4",
+                                 "D5", "E1", "E2", "E3", "F1")
 rownames(dge.subset$counts) <- NULL
 
 # plotting the heatmap
 heatmap.2(dge.subset$counts,symm=FALSE,symkey=FALSE, scale="row", 
-          density.info="none",trace="none", key=TRUE,margins=c(10,10))
+          density.info="none",trace="none", key=TRUE,margins=c(3,3))
 
 dev.off()
 
 # plotting and saving the heatmap to a file
 pdf("daphnia_dge_heatmap.pdf")
 heatmap.2(dge.subset$counts,symm=FALSE,symkey=FALSE, scale="row", density.info="none",trace="none",
-          key=TRUE,margins=c(10,10))
+          key=TRUE,margins=c(3,3))
 dev.off()
 
 #### Done! ######

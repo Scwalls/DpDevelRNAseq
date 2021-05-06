@@ -58,14 +58,14 @@ barplot(dge$samples$lib.size, names=c("A1","A2","A3",
                                       "A4", "B1","B2", "B3",
                                       "B4", "C1", "C2", "D1", "D2", "D3", "D4",
                                       "D5", "E1", "E2", "E3", "F1"), las=2, ylim=c(0,1200000))
-ggsave(file="library_counts_barplot.png", path="/scratch/T502_RNAseq/plots")
+ggsave(file="library_counts_barplot.png", path="/scratch/scwalls/T502_RNAseq/plots")
 
 ### making a plot of the counts value
 logcounts <- cpm(dge,log=TRUE)
 boxplot(logcounts, xlab="", ylab="(log2) counts per million",las=2)
 abline(h=median(logcounts),col="blue")
 title("Boxplots of logCPMs (unnormalised)")
-ggsave(file="boxplot_count_data.png", path="/scratch/T502_RNAseq/plots")
+ggsave(file="boxplot_count_data.png", path="/scratch/scwalls/T502_RNAseq/plots")
 
 # Filtering out genes that have a low number of counts (i.e. are lowly-expressed)
 
@@ -74,11 +74,13 @@ dge <- dge[keep, keep.lib.sizes=FALSE]
 
 # Creating a design matrix to model our experiment
 
+#design <- model.matrix(~0 + dge$samples$group)
 design <- model.matrix(~dge$samples$group)
 
 colnames(design) <- c("A", "B", "C", "D", "E", "F")
 
 design #what does this object look like?
+save(design, file = "design_matrix.RData")
 
 #estimate the dispersion
 
@@ -92,11 +94,12 @@ sqrt(dge$common.disp)
 # Now we plot the tagwise dispersions against the log2-scaled counts-per million (CPM) values
 
 plotBCV(dge)
-ggsave(file="tagwise_dispersions.png", path="/scratch/T502_RNAseq/plots")
+ggsave(file="DP_tagwise_dispersions_nointercept.png", path="/scratch/scwalls/T502_RNAseq/plots")
 
 # Now we performed the differential expression calculation
 
-fit <- glmFit(dge, design)
+# fit <- glmFit(dge, design)
+fit <- glmQLFit(dge, design)
 lrt <- glmLRT(fit, coef=2)
 topTags(lrt)
 
@@ -114,12 +117,12 @@ volcanoData <- cbind(lrt$table$logFC, -log10(lrt$table$PValue))
 plot(volcanoData, pch=19)
 abline(v=c(-2,2), col="red")
 
-save(dge, file="daphniaDGE.RData") #saving the updated dge object to our working directory
+save(dge, file="daphniaDGE_2.RData") #saving the updated dge object to our working directory
 
-daphnia_top_tags <- topTags(lrt, adjust.method="BH", sort.by="PValue", p.value=0.01)
+daphnia_top_tags <- topTags(lrt, n=Inf, adjust.method="BH", sort.by="PValue", p.value=0.01)
 head(daphnia_top_tags[[1]]) #shows the top results on the screen
-write.csv(daphnia_top_tags[[1]], file="daphnia_top_tags.csv", row.names=FALSE) #writes a csv file to your working directory
-save(daphnia_top_tags, file= "daphnia_top_tags.RData") #saves the daphnia_top_tags file as a p-value
+write.csv(daphnia_top_tags[[1]], file="daphnia_top_tags_2.csv", row.names=FALSE) #writes a csv file to your working directory
+save(daphnia_top_tags, file= "daphnia_top_tags_2.RData") #saves the daphnia_top_tags file as a p-value
 
 ##############
 #Making a heatmap with the differentially-expressed genes
@@ -157,7 +160,7 @@ heatmap.2(dge.subset$counts,symm=FALSE,symkey=FALSE, scale="row",
 dev.off()
 
 # plotting and saving the heatmap to a file
-pdf("daphnia_dge_heatmap.pdf")
+pdf("daphnia_dge_heatmap_2.pdf")
 heatmap.2(dge.subset$counts,symm=FALSE,symkey=FALSE, scale="row", density.info="none",trace="none",
           key=TRUE,margins=c(3,3))
 dev.off()

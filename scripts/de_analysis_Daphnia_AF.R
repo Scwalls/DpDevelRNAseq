@@ -100,7 +100,7 @@ ggsave(file="DP_tagwise_dispersions_nointercept.png", path="/scratch/scwalls/T50
 
 # fit <- glmFit(dge, design)
 fit <- glmQLFit(dge, design)
-lrt <- glmLRT(fit, coef=2)
+lrt <- glmLRT(fit, coef=6)
 topTags(lrt)
 
 summary(de <- decideTestsDGE(lrt, p=0.01, adjust="BH"))
@@ -117,12 +117,12 @@ volcanoData <- cbind(lrt$table$logFC, -log10(lrt$table$PValue))
 plot(volcanoData, pch=19)
 abline(v=c(-2,2), col="red")
 
-save(dge, file="daphniaDGE_AB.RData") #saving the updated dge object to our working directory
+save(dge, file="daphniaDGE_AF.RData") #saving the updated dge object to our working directory
 
 daphnia_top_tags <- topTags(lrt, n=Inf, adjust.method="BH", sort.by="PValue", p.value=0.01)
 head(daphnia_top_tags[[1]]) #shows the top results on the screen
-write.csv(daphnia_top_tags[[1]], file="daphnia_top_tags_AB.csv", row.names=FALSE) #writes a csv file to your working directory
-save(daphnia_top_tags, file= "daphnia_top_tags_AB.RData") #saves the daphnia_top_tags file as a p-value
+write.csv(daphnia_top_tags[[1]], file="daphnia_top_tags_AF.csv", row.names=FALSE) #writes a csv file to your working directory
+save(daphnia_top_tags, file= "daphnia_top_tags_AF.RData") #saves the daphnia_top_tags file as a p-value
 
 ##############
 #Making a heatmap with the differentially-expressed genes
@@ -160,14 +160,17 @@ rownames(dge.subset.2$counts) <- NULL
 
 # plotting the heatmap
 heatmap.2(dge.subset.2$counts,symm=FALSE,symkey=FALSE, scale="row", 
-          density.info="none",trace="none", key=TRUE,margins=c(3,3))
+          density.info="none",trace="none", key=TRUE,margins=c(3,3), Colv=FALSE)
 
-dev.off()
+pdf("daphnia_dge_heatmap_AF_noorder_2.pdf")
 
-# plotting and saving the heatmap to a file
-pdf("daphnia_dge_heatmap_AB_NO.pdf")
+
 heatmap.2(dge.subset$counts,symm=FALSE,symkey=FALSE, scale="row", density.info="none",trace="none",
-          key=TRUE,margins=c(3,3), Colv = F)
+          key=TRUE,margins=c(3,3))
 dev.off()
 
 #### Done! ######
+
+
+my.file <- read.csv(file = "daphnia_top_tags_AF.csv", header = TRUE)
+new.file <- my.file[,-2:-6]

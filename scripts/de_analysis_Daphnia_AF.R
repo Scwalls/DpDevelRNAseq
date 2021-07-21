@@ -171,6 +171,16 @@ dev.off()
 
 #### Done! ######
 
+heatmap.2(dge.subset.2$counts,
+          trace = "none",
+          cexRow = 0.2,
+          symbreaks = F,
+          scale = "none",
+          labCol=F,
+          main = "  ", 
+          dendrogram = "row",
+          Colv = F)
+
 
 my.file <- read.csv(file = "daphnia_top_tags_AF.csv", header = TRUE)
 new.file <- my.file[,-2:-6]

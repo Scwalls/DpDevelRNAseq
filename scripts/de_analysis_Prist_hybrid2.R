@@ -15,16 +15,18 @@ setwd(WD)
 
 #obtaining directory paths for both groups
 bamDir <- "../alignments"
-pristAnnot <- "../annotation/Hybrid2_AUGUSTUS2014_gene.gtf"
+dp_Annot <- "../annotation/Hybrid2_AUGUSTUS2014_gene.gtf"
 
 #obtaining list of file names for both groups
-seud_files <- list.files(bamDir, pattern="\\Seud1", full.names=TRUE)
+## change variable namess to A, B, ect
+## change pattern to grab .bam files for the daphnia
+seud_files <- list.files(bamDir, pattern="\\A", full.names=TRUE)
 NHR40_files <- list.files(bamDir, pattern="\\NHR40", full.names=TRUE)
 
 prist_files <- c(seud_files, NHR40_files)
 
 #creating a count table
-prist_fc <- featureCounts(prist_files, annot.ext=pristAnnot, useMetaFeatures=TRUE, strandSpecific=1, isPairedEnd=FALSE, nthreads=16, isGTFAnnotationFile=TRUE, primaryOnly=TRUE)
+prist_fc <- featureCounts(prist_files, annot.ext=dp_Annot, useMetaFeatures=TRUE, strandSpecific=1, isPairedEnd=FALSE, nthreads=16, isGTFAnnotationFile=TRUE, primaryOnly=TRUE)
 
 save(prist_fc, file="prist_DE.RData") #saving our featureCounts data to an R binary
 

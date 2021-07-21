@@ -26,6 +26,9 @@ metadata <- data.frame(pData(gset[[1]])[,idx],
 colnames(metadata) <- c('Study', 'Age', 'Distant.RFS', 'ER', 'GGI', 'Grade',
                         'Size', 'Time.RFS')
 
+# removing erronious samples from metadata matrix
+metadata <- metadata[]
+
 # prepare certain phenotypes of interest
 metadata$Study <- gsub('Reanalyzed by: ', '', as.character(metadata$Study))
 metadata$Age <- as.numeric(gsub('^KJ', NA, as.character(metadata$Age)))

@@ -1,0 +1,22 @@
+﻿Gene,Scaffold,Start,End,Strand,Chr.,Target,Identity,length,Evalue,Description,Symbol
+dp_gene277,scaffold_1,2322852,2324839,-,chr11,NP_476888.1,85.016,307,0.00E+00,"transcription factor IIB, isoform A [Drosophila melanogaster]",TfIIB-PA
+dp_gene385,scaffold_1,3116265,3123008,+,chr11,NP_524229.1,51.865,563,0.00E+00,"germ line transcription factor 1, isoform A [Drosophila melanogaster]",Gnf1-PA
+dp_gene1816,scaffold_2,3378594,3381697,+,chr4,NP_620473.1,39.286,168,2.07E-14,"activating transcription factor 3, isoform A [Drosophila melanogaster]",Atf3-PA
+dp_gene2015,scaffold_2,4816449,4818903,+,chr4,NP_732647.1,45.833,192,2.83E-40,"E2F transcription factor 1, isoform C [Drosophila melanogaster]",E2f1-PC
+dp_gene2383,scaffold_3,990990,992265,+,chr5,NP_608574.2,48.611,288,5.53E-93,transcription factor B4 [Drosophila melanogaster],Tfb4-PA
+dp_gene2685,scaffold_3,3017138,3020481,+,chr5,NP_524415.1,29.126,206,9.60E-24,"mitochondrial transcription factor A, isoform A [Drosophila melanogaster]",TFAM
+dp_gene2879,scaffold_3,4282962,4299391,+,chr5,NP_730359.1,64.435,239,1.62E-106,"ftz transcription factor 1, isoform A [Drosophila melanogaster]",ftz-f1
+dp_gene3240,scaffold_4,117345,119723,-,chr10,NP_649971.1,44.828,29,8.50E-01,mitochondrial transcription factor B2 [Drosophila melanogaster],mtTFB2-PA
+dp_gene4632,scaffold_5,3705764,3707413,-,chr8,NP_524026.1,50.478,418,1.83E-129,transcription factor IIEalpha [Drosophila melanogaster],TfIIEα-PA
+dp_gene7504,scaffold_11,1088109,1089565,+,chr7,NP_523923.1,56.098,287,6.28E-108,"transcription factor IIEbeta, isoform A [Drosophila melanogaster]",TfIIEβ
+dp_gene8560,scaffold_13,1381386,1383876,+,chr9,NP_001261754.1,48.507,402,1.13E-111,"LIM homeobox transcription factor 1 alpha, isoform C [Drosophila melanogaster]",Lmx1a
+dp_gene10144,scaffold_18,1885013,1888276,+,chr2,NP_524246.1,60,175,3.11E-65,transcription factor IIFalpha [Drosophila melanogaster],TfIIFα
+dp_gene10918,scaffold_21,703602,706273,+,chr1,NP_001033973.1,50,76,1.52E-15,activating transcription factor-2 [Drosophila melanogaster],Atf-2
+dp_gene14045,scaffold_37,403949,405912,+,chr2,NP_476996.1,39.13,230,2.28E-27,"transcription factor IIA L, isoform B [Drosophila melanogaster]",TfIIA-L
+dp_gene14374,scaffold_39,347883,350347,+,chr9,NP_725383.1,44.388,588,6.73E-149,"transcription factor B1, isoform C [Drosophila melanogaster]",Tfb1
+dp_gene14539,scaffold_41,802746,805002,-,chr12,NP_609066.1,31.519,349,6.30E-40,apoptosis antagonizing transcription factor [Drosophila melanogaster],Aatf
+dp_gene15334,scaffold_50,485933,492618,-,chr2,NP_001246580.1,57.895,95,3.51E-23,"Myocardin-related transcription factor, isoform D [Drosophila melanogaster]",Mrtf
+dp_gene15481,scaffold_52,207259,210243,+,chr7,NP_001260949.1,58.824,238,1.43E-95,"DP transcription factor, isoform C [Drosophila melanogaster]",Dp
+dp_gene18819,scaffold_111,346010,351913,+,chr4,NP_730664.1,55.689,167,3.15E-59,"transcription factor AP-2, isoform A [Drosophila melanogaster]",TfAP-2
+dp_gene20501,scaffold_196,69413,72777,+,NA,NP_001287002.1,52.284,197,2.18E-66,"metal response element-binding transcription Factor-1, isoform F [Drosophila melanogaster]",MTF-1
+dp_gene21707,scaffold_346,9027,9541,+,NA,NP_001137791.2,60.274,73,1.28E-24,transcription factor B5 [Drosophila melanogaster],Tfb5

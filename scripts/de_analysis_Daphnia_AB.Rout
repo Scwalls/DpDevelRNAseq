@@ -1,0 +1,358 @@
+
+R version 4.0.2 (2020-06-22) -- "Taking Off Again"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> 
+> #creates a series of plots relating to differential expression analysis
+> # uses the bioconductor package 'limma'
+> 
+> ## loading required packages (requires prior installation of each of the following)
+> require("limma") 
+Loading required package: limma
+> require("edgeR")
+Loading required package: edgeR
+> require("Rsubread")
+Loading required package: Rsubread
+> require("Biobase")
+Loading required package: Biobase
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: 'BiocGenerics'
+
+The following objects are masked from 'package:parallel':
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following object is masked from 'package:limma':
+
+    plotMA
+
+The following objects are masked from 'package:stats':
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from 'package:base':
+
+    Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+    as.data.frame, basename, cbind, colnames, dirname, do.call,
+    duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,
+    lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,
+    pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,
+    tapply, union, unique, unsplit, which.max, which.min
+
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+> require("gplots")
+Loading required package: gplots
+
+Attaching package: 'gplots'
+
+The following object is masked from 'package:stats':
+
+    lowess
+
+> 
+> ### set your path to the scripts directory
+> WD="/scratch/scwalls/T502_RNAseq/scripts"
+> setwd(WD)
+> 
+> #obtaining directory paths for both groups
+> bamDir <- "/scratch/scwalls/DaphniaDevel/STAR_RNA/fastqs"
+> dp_Annot <- "/scratch/scwalls/T502_RNAseq/annotation/PA42_4.0_onlygeneIDs.saf"
+> #dp_Annot <- "/scratch/scwalls/T502_RNAseq/annotation/PA42.4.0.test2.gtf"
+> #dp_Annot <- "/scratch/scwalls/STRIPEseq_pipelines/GoSTRIPES_sing/STRIPES/DpGENOME/PA42.4.0.test2.gtf"
+> 
+> 
+> #obtaining list of file names for both groups
+> ## change variable namess to A, B, ect
+> ## change pattern to grab .bam files for the daphnia
+> files_A <- list.files(bamDir, pattern='*A.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
+> files_B <- list.files(bamDir, pattern='*B.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
+> files_C <- list.files(bamDir, pattern='*C.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
+> files_D <- list.files(bamDir, pattern='*D.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
+> files_E <- list.files(bamDir, pattern='*E.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
+> files_F <- list.files(bamDir, pattern='*F.*.fastq.gz.STAR.Aligned.sortedByCoord.out.bam$', full.names=TRUE)
+> 
+> daphnia_files <- c(files_A, files_B, files_C, files_D, files_E, files_F)
+> 
+> #creating a count table
+> daphnia_fc <- featureCounts(daphnia_files, annot.ext=dp_Annot, useMetaFeatures=TRUE, strandSpecific=1, isPairedEnd=TRUE, nthreads=16, isGTFAnnotationFile=FALSE, GTF.featureType="gene", GTF.attrType="gene_id", primaryOnly=TRUE)
+
+        ==========     _____ _    _ ____  _____  ______          _____  
+        =====         / ____| |  | |  _ \|  __ \|  ____|   /\   |  __ \ 
+          =====      | (___ | |  | | |_) | |__) | |__     /  \  | |  | |
+            ====      \___ \| |  | |  _ <|  _  /|  __|   / /\ \ | |  | |
+              ====    ____) | |__| | |_) | | \ \| |____ / ____ \| |__| |
+        ==========   |_____/ \____/|____/|_|  \_\______/_/    \_\_____/
+       Rsubread 2.4.3
+
+//========================== featureCounts setting ===========================\\
+||                                                                            ||
+||             Input files : 19 BAM files                                     ||
+||                                                                            ||
+||                           A10_S18_R1.fastq.gz.STAR.Aligned.sortedByCoo ... ||
+||                           A11_S21_R1.fastq.gz.STAR.Aligned.sortedByCoo ... ||
+||                           A7_S12_R1.fastq.gz.STAR.Aligned.sortedByCoor ... ||
+||                           A9_S15_R1.fastq.gz.STAR.Aligned.sortedByCoor ... ||
+||                           B10_S19_R1.fastq.gz.STAR.Aligned.sortedByCoo ... ||
+||                           B11_S22_R1.fastq.gz.STAR.Aligned.sortedByCoo ... ||
+||                           B7_S13_R1.fastq.gz.STAR.Aligned.sortedByCoor ... ||
+||                           B9_S16_R1.fastq.gz.STAR.Aligned.sortedByCoor ... ||
+||                           C2_S6_R1.fastq.gz.STAR.Aligned.sortedByCoord ... ||
+||                           C7_S14_R1.fastq.gz.STAR.Aligned.sortedByCoor ... ||
+||                           D0_S1_R1.fastq.gz.STAR.Aligned.sortedByCoord ... ||
+||                           D1_S4_R1.fastq.gz.STAR.Aligned.sortedByCoord ... ||
+||                           D3_S8_R1.fastq.gz.STAR.Aligned.sortedByCoord ... ||
+||                           D4_S10_R1.fastq.gz.STAR.Aligned.sortedByCoor ... ||
+||                           D5_S11_R1.fastq.gz.STAR.Aligned.sortedByCoor ... ||
+||                           E0_S2_R1.fastq.gz.STAR.Aligned.sortedByCoord ... ||
+||                           E1_S5_R1.fastq.gz.STAR.Aligned.sortedByCoord ... ||
+||                           E2_S7_R1.fastq.gz.STAR.Aligned.sortedByCoord ... ||
+||                           F10_S20_R1.fastq.gz.STAR.Aligned.sortedByCoo ... ||
+||                                                                            ||
+||              Paired-end : yes                                              ||
+||        Count read pairs : yes                                              ||
+||              Annotation : PA42_4.0_onlygeneIDs.saf (SAF)                   ||
+||      Dir for temp files : .                                                ||
+||                 Threads : 16                                               ||
+||                   Level : meta-feature level                               ||
+||      Multimapping reads : counted                                          ||
+||     Multiple alignments : primary alignment only                           ||
+|| Multi-overlapping reads : not counted                                      ||
+||   Min overlapping bases : 1                                                ||
+||                                                                            ||
+\\============================================================================//
+
+//================================= Running ==================================\\
+||                                                                            ||
+|| Load annotation file PA42_4.0_onlygeneIDs.saf ...                          ||
+||    Features : 372654                                                       ||
+||    Meta-features : 22119                                                   ||
+||    Chromosomes/contigs : 456                                               ||
+||                                                                            ||
+|| Process BAM file A10_S18_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.ba ... ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 63952941                                             ||
+||    Successfully assigned alignments : 598258 (0.9%)                        ||
+||    Running time : 21.79 minutes                                            ||
+||                                                                            ||
+|| Process BAM file A11_S21_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.ba ... ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 65924063                                             ||
+||    Successfully assigned alignments : 624385 (0.9%)                        ||
+||    Running time : 17.74 minutes                                            ||
+||                                                                            ||
+|| Process BAM file A7_S12_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...  ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 45017399                                             ||
+||    Successfully assigned alignments : 566571 (1.3%)                        ||
+||    Running time : 6.13 minutes                                             ||
+||                                                                            ||
+|| Process BAM file A9_S15_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...  ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 42960293                                             ||
+||    Successfully assigned alignments : 569881 (1.3%)                        ||
+||    Running time : 4.42 minutes                                             ||
+||                                                                            ||
+|| Process BAM file B10_S19_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.ba ... ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 50452863                                             ||
+||    Successfully assigned alignments : 634366 (1.3%)                        ||
+||    Running time : 8.68 minutes                                             ||
+||                                                                            ||
+|| Process BAM file B11_S22_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.ba ... ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 61381854                                             ||
+||    Successfully assigned alignments : 718747 (1.2%)                        ||
+||    Running time : 13.85 minutes                                            ||
+||                                                                            ||
+|| Process BAM file B7_S13_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...  ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 62544199                                             ||
+||    Successfully assigned alignments : 969893 (1.6%)                        ||
+||    Running time : 13.61 minutes                                            ||
+||                                                                            ||
+|| Process BAM file B9_S16_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...  ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 43963565                                             ||
+||    Successfully assigned alignments : 606371 (1.4%)                        ||
+||    Running time : 5.41 minutes                                             ||
+||                                                                            ||
+|| Process BAM file C2_S6_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...   ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 67542137                                             ||
+||    Successfully assigned alignments : 678725 (1.0%)                        ||
+||    Running time : 25.20 minutes                                            ||
+||                                                                            ||
+|| Process BAM file C7_S14_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...  ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 83827427                                             ||
+||    Successfully assigned alignments : 735538 (0.9%)                        ||
+||    Running time : 18.37 minutes                                            ||
+||                                                                            ||
+|| Process BAM file D0_S1_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...   ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 44283719                                             ||
+||    Successfully assigned alignments : 415725 (0.9%)                        ||
+||    Running time : 5.23 minutes                                             ||
+||                                                                            ||
+|| Process BAM file D1_S4_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...   ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 73510240                                             ||
+||    Successfully assigned alignments : 476839 (0.6%)                        ||
+||    Running time : 16.55 minutes                                            ||
+||                                                                            ||
+|| Process BAM file D3_S8_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...   ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 94902174                                             ||
+||    Successfully assigned alignments : 140622 (0.1%)                        ||
+||    Running time : 36.67 minutes                                            ||
+||                                                                            ||
+|| Process BAM file D4_S10_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...  ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 112907104                                            ||
+||    Successfully assigned alignments : 204757 (0.2%)                        ||
+||    Running time : 53.02 minutes                                            ||
+||                                                                            ||
+|| Process BAM file D5_S11_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...  ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 40237703                                             ||
+||    Successfully assigned alignments : 553682 (1.4%)                        ||
+||    Running time : 3.71 minutes                                             ||
+||                                                                            ||
+|| Process BAM file E0_S2_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...   ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 46132103                                             ||
+||    Successfully assigned alignments : 596546 (1.3%)                        ||
+||    Running time : 4.76 minutes                                             ||
+||                                                                            ||
+|| Process BAM file E1_S5_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...   ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 70484310                                             ||
+||    Successfully assigned alignments : 480922 (0.7%)                        ||
+||    Running time : 14.11 minutes                                            ||
+||                                                                            ||
+|| Process BAM file E2_S7_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam...   ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 59473639                                             ||
+||    Successfully assigned alignments : 457446 (0.8%)                        ||
+||    Running time : 10.00 minutes                                            ||
+||                                                                            ||
+|| Process BAM file F10_S20_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.ba ... ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 44503846                                             ||
+||    Successfully assigned alignments : 459147 (1.0%)                        ||
+||    Running time : 4.63 minutes                                             ||
+||                                                                            ||
+|| Write the final count table.                                               ||
+|| Write the read assignment summary.                                         ||
+||                                                                            ||
+\\============================================================================//
+
+> 
+> save(daphnia_fc, file="daphnia_DE.RData") #saving our featureCounts data to an R binary
+> 
+> ## end of read counts section ##
+> 
+> #load("daphnia_DE.RData") #starting from an R binary containing the featureCounts list created using the commands above. To run the above commands simply uncomment them (remove the leading '#' from each individual command), and commend out this line.
+> 
+> dge <- DGEList(counts = daphnia_fc$counts,
++                group = c(rep("files_A",4),rep("files_B",4),rep("files_C",2),rep("files_D",5),rep("files_E",3),rep("files_F",1)),
++                genes = daphnia_fc$annotation$GeneID)
+> 
+> ### Now we will apply TMM normalization
+>                
+> dge <- calcNormFactors(dge)
+> 
+> ### Let's take a look at the normalization factors
+> 
+> dge$samples
+                                                         group lib.size
+A10_S18_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam files_A   598258
+A11_S21_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam files_A   624385
+A7_S12_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam  files_A   566571
+A9_S15_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam  files_A   569881
+B10_S19_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam files_B   634366
+B11_S22_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam files_B   718747
+B7_S13_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam  files_B   969893
+B9_S16_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam  files_B   606371
+C2_S6_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam   files_C   678725
+C7_S14_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam  files_C   735538
+D0_S1_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam   files_D   415725
+D1_S4_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam   files_D   476839
+D3_S8_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam   files_D   140622
+D4_S10_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam  files_D   204757
+D5_S11_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam  files_D   553682
+E0_S2_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam   files_E   596546
+E1_S5_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam   files_E   480922
+E2_S7_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam   files_E   457446
+F10_S20_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam files_F   459147
+                                                       norm.factors
+A10_S18_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam    0.8930561
+A11_S21_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam    0.8802020
+A7_S12_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam     0.8987402
+A9_S15_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam     0.9068132
+B10_S19_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam    0.9034485
+B11_S22_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam    0.8793810
+B7_S13_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam     0.8481481
+B9_S16_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam     0.8039077
+C2_S6_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam      0.9256718
+C7_S14_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam     0.8800364
+D0_S1_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam      1.1411274
+D1_S4_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam      1.1518092
+D3_S8_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam      1.3983627
+D4_S10_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam     1.4021927
+D5_S11_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam     1.0307769
+E0_S2_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam      1.0698892
+E1_S5_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam      1.1321489
+E2_S7_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam      1.1810210
+F10_S20_R1.fastq.gz.STAR.Aligned.sortedByCoord.out.bam    0.9308163
+> 
+> ### making a plot of the library counts data
+> barplot(dge$samples$lib.size, names=c("A1","A2","A3",
++                                       "A4", "B1","B2", "B3",
++                                       "B4", "C1", "C2", "D1", "D2", "D3", "D4",
++                                       "D5", "E1", "E2", "E3", "F1"), las=2, ylim=c(0,1200000))
+> ggsave(file="library_counts_barplot.png", path="/scratch/scwalls/T502_RNAseq/plots")
+Error in ggsave(file = "library_counts_barplot.png", path = "/scratch/scwalls/T502_RNAseq/plots") : 
+  could not find function "ggsave"
+Execution halted

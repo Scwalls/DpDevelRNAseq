@@ -159,15 +159,13 @@ colnames(dge.subset.2$counts) <- c("A1", "A2","A3",
 rownames(dge.subset.2$counts) <- NULL
 
 # plotting the heatmap
-heatmap.2(dge.subset.2$counts,symm=FALSE,symkey=FALSE, scale="row", 
-          density.info="none",trace="none", key=TRUE,margins=c(3,3))
+#heatmap.2(dge.subset.2$counts,symm=FALSE,symkey=FALSE, scale="row", 
+#          density.info="none",trace="none", key=TRUE,margins=c(3,3))
 
-dev.off()
+#dev.off()
 
 # plotting and saving the heatmap to a file
 pdf("daphnia_dge_heatmap_AB_NO.pdf")
 heatmap.2(dge.subset$counts,symm=FALSE,symkey=FALSE, scale="row", density.info="none",trace="none",
-          key=TRUE,margins=c(3,3), Colv = F)
+          key=TRUE,margins=c(3,5), Colv = F)
 dev.off()
-
-#### Done! ######

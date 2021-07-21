@@ -1,0 +1,48 @@
+GeneID	GeneName 	GOTerms
+dp_gene860	hypothetical protein DAPPUDRAFT_237796	
+dp_gene376	Polyribonucleotide nucleotidyltransferase mitochondrial	"3'-5'-exoribonuclease activity;RNA binding;polyribonucleotide nucleotidyltransferase activity;RNA processing;mRNA catabolic process;RNA phosphodiester bond hydrolysis, exonucleolytic"
+dp_gene433	CUB and sushi domain-containing 2	
+dp_gene138	"acyl- :lysophosphatidylglycerol acyltransferase 1-like isoform X1	"	"integral component of membrane;transferase activity, transferring acyl groups;metabolic process"
+dp_gene929	"Long-chain-fatty-acid-- ligase ACSBG1	"	ligase activity;metabolic process
+dp_gene1366	Neuroendocrine convertase 2	extracellular space;integral component of membrane;serine-type endopeptidase activity;protein processing
+dp_gene511	Galectin	carbohydrate binding
+dp_gene1283	Insulin growth factor 1 receptor	integral component of membrane;transmembrane receptor protein tyrosine kinase activity;ATP binding;transmembrane receptor protein tyrosine kinase signaling pathway;peptidyl-tyrosine phosphorylation
+dp_gene1220	hypothetical protein DAPPUDRAFT_222523	membrane
+dp_gene1298		
+dp_gene856	LOW QUALITY PROTEIN: hypothetical protein DAPPUDRAFT_237740	metal ion binding;cellular component organization
+dp_gene862	hypothetical protein	
+dp_gene186	Guanylate kinase	integral component of membrane
+dp_gene1150	thioredoxin-related transmembrane 2 homolog	cell;integral component of membrane;cell redox homeostasis
+dp_gene1420	dopamine receptor 1 isoform X1	"integral component of plasma membrane;dopamine neurotransmitter receptor activity, coupled via Gs;dopamine binding;synaptic transmission, dopaminergic;adenylate cyclase-activating dopamine receptor signaling pathway;memory;olfactory learning;thermosensory behavior;response to starvation;thermotaxis;cellular response to sucrose stimulus;regulation of olfactory learning;regulation of presynaptic cytosolic calcium ion concentration;response to odorant"
+dp_gene448	Tetratricopeptide repeat	nucleic acid binding
+dp_gene521	hypothetical protein DAPPUDRAFT_318420	
+dp_gene809	hypothetical protein DAPPUDRAFT_98753	
+dp_gene4	Nuclear receptor subfamily 4 group A member	"nucleus;transcription factor activity, sequence-specific DNA binding;protein binding;zinc ion binding;sequence-specific DNA binding;transcription, DNA-templated;regulation of transcription, DNA-templated;tissue development;steroid hormone mediated signaling pathway;animal organ development;positive regulation of biological process;negative regulation of cellular process;regulation of multicellular organismal process"
+dp_gene396	Conserved oligomeric Golgi complex subunit 6	Golgi transport complex;intra-Golgi vesicle-mediated transport
+dp_gene491		
+dp_gene406	"Poly(ADP-ribose) glycohydrolase	poly(ADP-ribose)"	glycohydrolase activity;carbohydrate metabolic process
+dp_gene274	stromal cell-derived factor 2	dolichyl-phosphate-mannose-protein mannosyltransferase complex;dolichyl-phosphate-mannose-protein mannosyltransferase activity;cell wall mannoprotein biosynthetic process;multicellular organism development;protein O-linked mannosylation;chain elongation of O-linked mannose residue;regulation of endoplasmic reticulum unfolded protein response
+dp_gene501	Sodium-dependent phosphate transport 2B	cytoplasm;plasma membrane;integral component of membrane;inorganic phosphate transmembrane transporter activity;sodium:phosphate symporter activity;sodium-dependent phosphate transmembrane transporter activity;cellular phosphate ion homeostasis;phosphate ion transmembrane transport;sodium ion transmembrane transport;sodium-dependent phosphate transport
+dp_gene1461	Maternal pumilio	integral component of membrane;RNA binding;amidine-lyase activity;purine ribonucleotide biosynthetic process;purine ribonucleoside monophosphate biosynthetic process
+dp_gene20	probable D-lactate mitochondrial	D-lactate dehydrogenase (cytochrome) activity;flavin adenine dinucleotide binding;oxidation-reduction process
+dp_gene175	PDZ domain-containing GIPC3	
+dp_gene307	Spinster type iv	lysosomal membrane;integral component of membrane;vesicle;sphingolipid transporter activity;sphingosine-1-phosphate signaling pathway;lipid transport;locomotion;transmembrane transport
+dp_gene344	Heparan-sulfate 6-O-sulfotransferase 2	"integral component of membrane;heparan sulfate 6-O-sulfotransferase activity;heparan sulfate proteoglycan biosynthetic process, enzymatic modification"
+dp_gene658		
+dp_gene1435	PDZ domain-containing 8 isoform X2	intracellular;metal ion binding;intracellular signal transduction
+dp_gene710	hypothetical protein DAPPUDRAFT_300361	
+dp_gene585	Serine arginine repetitive matrix 1	mRNA processing
+dp_gene1115	Arf-GAP with coiled- ANK repeat and PH domain-containing	GTPase activator activity;positive regulation of GTPase activity
+dp_gene285	hypothetical protein DAPPUDRAFT_325989	
+dp_gene803	hypothetical protein DAPPUDRAFT_237736	
+dp_gene602	L-asparaginase	asparaginase activity;cellular amino acid metabolic process
+dp_gene1041	Cral trio domain-containing	integral component of membrane;transport
+dp_gene1103	hypothetical protein DAPPUDRAFT_314237	integral component of membrane;single-organism transport
+dp_gene116	N-alpha-acetyltransferase 40	N-acetyltransferase activity
+dp_gene780	actin isoform X2	
+dp_gene241	hypothetical protein DAPPUDRAFT_325982	cytoplasm;glutathione transferase activity;glutathione metabolic process
+dp_gene1336	hypothetical protein DAPPUDRAFT_222061	
+dp_gene847	cyclin-dependent kinase 10	protein serine/threonine kinase activity;ATP binding;protein phosphorylation
+dp_gene96	hypothetical protein DAPPUDRAFT_255453	
+dp_gene449	Protoporphyrinogen oxidase	GINS complex;oxygen-dependent protoporphyrinogen oxidase activity;3'-5' DNA helicase activity;porphyrin-containing compound biosynthetic process;DNA duplex unwinding;oxidation-reduction process;DNA strand elongation involved in mitotic DNA replication
+dp_gene1004	Microsomal glutathione S-transferase 3	nuclear envelope;endoplasmic reticulum;integral component of membrane;glutathione transferase activity;glutathione peroxidase activity;cellular oxidant detoxification

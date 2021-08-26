@@ -36,6 +36,11 @@ daphnia_files <- c(files_A, files_B, files_C, files_D, files_E, files_F)
 daphnia_fc <- featureCounts(daphnia_files, annot.ext=dp_Annot, useMetaFeatures=TRUE, strandSpecific=1, isPairedEnd=TRUE, nthreads=16, isGTFAnnotationFile=FALSE, GTF.featureType="gene", GTF.attrType="gene_id", primaryOnly=TRUE)
 
 save(daphnia_fc, file="daphnia_DE.RData") #saving our featureCounts data to an R binary
+daphnia_fc$counts -> dp.counts.fc
+head(dp.counts.fc)
+write.csv(dp.counts.fc, file="csv_feature_counts.csv")
+
+#saving 
 
 ## end of read counts section ##
 
@@ -159,18 +164,32 @@ colnames(dge.subset.2$counts) <- c("A1", "A2","A3",
                                  "D5", "E1", "E2", "E3", "F1")
 rownames(dge.subset.2$counts) <- NULL
 
+library(heatmap3)
+heatmap.2(dge.subset.2$counts,
+          trace = "none",
+          symm = F,
+          symkey = F,
+          cexRow = 1,
+          symbreaks = F,
+          scale = "row",
+          main = "Differential Expression of 
+          mRNA Transcripts, AF", 
+          dendrogram = "row",
+          Colv = F,
+          margins = c(3,5))
+
 # plotting the heatmap
-heatmap.2(dge.subset.2$counts,symm=FALSE,symkey=FALSE, scale="row", 
-          density.info="none",trace="none", key=TRUE,margins=c(3,3))
+#heatmap.2(dge.subset.2$counts,symm=FALSE,symkey=FALSE, scale="row", 
+#          density.info="none",trace="none", key=TRUE,margins=c(3,3))
 
 dev.off()
 
 # plotting and saving the heatmap to a file
-pdf("daphnia_dge_heatmap_CD.pdf")
+#pdf("daphnia_dge_heatmap_CD.pdf")
 
-heatmap.2(dge.subset.2$counts,symm=FALSE,symkey=FALSE, scale="row", 
-          density.info="none",trace="none", key=TRUE,margins=c(3,3), Colv=FALSE)
+#heatmap.2(dge.subset.2$counts,symm=FALSE,symkey=FALSE, scale="row", 
+#          density.info="none",trace="none", key=TRUE,margins=c(3,3), Colv=FALSE)
 
-pdf("daphnia_dge_heatmap_CD_noorder.pdf")
+#pdf("daphnia_dge_heatmap_CD_noorder.pdf")
 
 #### Done! ######

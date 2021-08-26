@@ -137,8 +137,7 @@ colnames(de_data.2) <- c("A1", "A2","A3",
                        "B4", "C1", "C2", "D1", "D2",
                        "D5", "E1", "E2", "E3", "F1" )
 head(de_data.2)
-dge.subset.2 <- dge.subset[,-13]
-dge.subset.2 <- dge.subset.2[,-13]
+
 
 top_tags <- topTags(lrt, n= 18146, sort.by="none")
 
@@ -151,7 +150,10 @@ diff.genes = rownames(de_data.2[de_data.2$FDR<0.01, ])
 head(diff.genes)
 length(diff.genes)
 
+#dge.subset = dge[diff.genes, ]
 dge.subset = dge[diff.genes, ]
+dge.subset.2 <- dge.subset[,-13]
+dge.subset.2 <- dge.subset.2[,-13]
 colnames(dge.subset.2$counts) <- c("A1", "A2","A3",
                                  "A4", "B1","B2", "B3",
                                  "B4", "C1", "C2", "D1", "D2",
@@ -159,31 +161,32 @@ colnames(dge.subset.2$counts) <- c("A1", "A2","A3",
 rownames(dge.subset.2$counts) <- NULL
 
 # plotting the heatmap
-heatmap.2(dge.subset.2$counts,symm=FALSE,symkey=FALSE, scale="row", 
-          density.info="none",trace="none", key=TRUE,margins=c(3,3), Colv=FALSE)
+#heatmap.2(dge.subset.2$counts,symm=FALSE,symkey=FALSE, scale="row", 
+#          density.info="none",trace="none", key=TRUE,margins=c(3,3), Colv=FALSE)
 
-pdf("daphnia_dge_heatmap_AF_noorder_2.pdf")
+#pdf("daphnia_dge_heatmap_AF_noorder_2.pdf")
 
 
-heatmap.2(dge.subset$counts,symm=FALSE,symkey=FALSE, scale="row", density.info="none",trace="none",
-          key=TRUE,margins=c(3,3))
-dev.off()
+#heatmap.2(dge.subset$counts,symm=FALSE,symkey=FALSE, scale="row", density.info="none",trace="none",
+#          key=TRUE,margins=c(3,3))
+#dev.off()
 
 #### Done! ######
 
 
-my.file <- read.csv(file = "daphnia_top_tags_AF.csv", header = TRUE)
-new.file <- my.file[,-2:-6]
+#my.file <- read.csv(file = "daphnia_top_tags_AF.csv", header = TRUE)
+#new.file <- my.file[,-2:-6]
 
 library(heatmap3)
 heatmap.2(dge.subset.2$counts,
           trace = "none",
           symm = F,
           symkey = F,
-          cexRow = 0.2,
+          cexRow = 1,
           symbreaks = F,
           scale = "row",
-          main = "title", 
+          main = "Differential Expression of 
+          mRNA Transcripts, AF", 
           dendrogram = "row",
           Colv = F,
           margins = c(3,5))
